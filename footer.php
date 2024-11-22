@@ -41,37 +41,53 @@
 
 
         <!--Reviews Modal -->
-        <div class="modal fade" id="reviews" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog ">
-                <div class="modal-content ">
-
-                    <div class="modal-body d-flex justify-content-center ">
-                        <form action="reviews.php" method="post" enctype="multipart/form-data">
-                            <label for="name" class="form-label text-secondary ">Name:</label><br>
-                            <input type="text" class="form-control" name='name'><br>
-                            <label for="profession" class="form-label  text-secondary">profession</label><br>
-                            <input type="text" name='profession' class="form-control"><br>
-                            <label for="email" class="form-label  text-secondary">Email:</label><br>
-                            <input type="email" name='email' class="form-control"><br>
-                            <label for="image" class="form-label text-secondary">Select Image:</label><br>
-                            <input type="file" name="image" class="form-control" required><br>
-                            <label for="message" class="form-label text-secondary">Message</label><br>
-                            <textarea type="text" name='message' class="form-control"
-                                placeholder='Express your thoughts about our Services or products'></textarea><br><br>
-                            <div class="modal-footer justify-content-center ">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary" name="submit">Send Message</button>
-                            </div>
-                        </form>
+        <?php if(isset($_SESSION['name'])) :?>
+            <div class="modal fade" id="reviews" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content ">
+                        <div class="modal-body d-flex justify-content-center ">
+                            <form action="reviews.php" method="post" enctype="multipart/form-data">
+                                <h4 class='text-warning'>Hi! <?php echo $_SESSION['name'] ; ?></h4>
+                                <label for="profession" class="form-label  text-secondary">profession</label><br>
+                                <input type="text" name='profession' class="form-control" required><br>
+                                <label for="image" class="form-label text-secondary">Select Image:</label><br>
+                                <input type="file" name="image" class="form-control" required><br>
+                                <label for="message" class="form-label text-secondary">Message</label><br>
+                                <textarea type="text" name='message' class="form-control"
+                                    placeholder='Express your thoughts about our Services or products' required></textarea><br><br>
+                                <div class="modal-footer justify-content-center ">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" name="submit">Send Message</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <?php else :?>
+            <!-- Modal -->
+            <div class="modal fade" id="reviews" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content ">
+                        <div class="modal-header d-flex justify-content-center">
+                            <h4 class="modal-title text-warning">Sorry &#128522; </h4>
+                        </div>
+                        <div class="modal-body ">
+                            <h6 class='text-warning'>Login is required </h6>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <a type="button"  class="btn btn-warning text-light" href='login.php'>Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        <?php endif;?> 
+    
     </div>
 </div>
-</div>
-</div>
+
 <div class="container">
     <div class="copyright">
         <div class="row">

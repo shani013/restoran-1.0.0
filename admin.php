@@ -75,9 +75,9 @@
                 <div class="modal-body d-flex justify-content-center ">
                     <form action="chef.php" method="post" enctype="multipart/form-data">
                         <label for="name" class="form-label ">Name:</label><br>
-                        <input type="text" class="form-control" name='name'><br>
+                        <input type="text" class="form-control" name='name' required><br>
                         <label for="designation" class="form-label ">Designation</label><br>
-                        <input type="text" name='designation' class="form-control"><br>
+                        <input type="text" name='designation' class="form-control" required><br>
                         <label for="image" class="form-label ">Select Image:</label><br>
                         <input type="file" name="image" class="form-control" required><br>
                         <br>

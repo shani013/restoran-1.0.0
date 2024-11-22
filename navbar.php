@@ -1,6 +1,20 @@
 <?php 
 session_start(); 
 ?>
+<style>
+    .cart-container {
+        position: relative;
+        display: inline-block;
+    }
+    .cart-number {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1rem;
+        font-weight: bold;
+    }
+</style>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
     <a href="" class="navbar-brand p-0">
         <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
@@ -30,10 +44,10 @@ session_start();
         </div>
         <!-- Button trigger modal -->
          <?php if(isset($_SESSION['name'])): ?>
-            <a type="button" href='menu.php' class="btn btn-primary  me-3 animated slideInLeft" >
-                Order now
+            <a href="#" class="cart-container">
+              <i class="bi bi-cart" style="font-size: 3rem;"></i>
+                <span class="cart-number text-warning">3</span>
             </a>
-        
         <?php else : ?> 
             <a type="button" class="btn btn-primary py-2 px-4" href='login.php'>
             Login
@@ -43,23 +57,4 @@ session_start();
         
     </div>
 </nav>
-
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="signinmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      
-      <div class="modal-body d-flex justify-content-around ">
-        <button type="button" class="btn btn-primary">Log in</button>
-        <button type="button" class="btn btn-success">Sign up</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 

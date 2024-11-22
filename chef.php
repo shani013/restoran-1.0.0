@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
     // Move the uploaded file to the target directory
     if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
         // Insert the name, price, image URL, and description into the database
-        $sql = "INSERT INTO chefs (name,designation,images) VALUES ('$name','$designation','$target_file')";
+        $sql = "INSERT INTO chefs (name,designation,image) VALUES ('$name','$designation','$target_file')";
         $result = mysqli_query($conn, $sql);
         header('Location: admin.php');
         exit();
