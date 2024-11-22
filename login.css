@@ -1,0 +1,80 @@
+
+:root {
+    --accent: #FFA500;
+    --color1: linear-gradient(to bottom right, #FFA500, #FF5F1F);
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    /* Remove default margin */
+    padding: 0;
+    /* Remove default padding */
+    height: 100vh;
+    /* Full viewport height */
+    background-image: url('bg.jpg');
+    /* Set background image */
+    background-size: cover;
+    /* Ensure the image covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevent the image from repeating */
+    background-position: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 400px;
+    color: var(--accent);
+    position: absolute;
+    padding: 10px 30px;
+    margin-top: 50px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgb(255, 255, 255, 0.3);
+    border-radius: 16px;
+    text-align: center;
+    padding-bottom: 16px;
+}
+
+button {
+    background: var(--color1);
+    color: #EEEEEE;
+    text-decoration: none;
+    padding: 12px 0;
+    margin: 20px 0 10px 0;
+    text-align: center;
+    border-radius: 30px;
+    border: none;
+    transition: 0.4s;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+    margin-top: 45px;
+}
+input {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 20px;
+    margin: 10px 0;
+    height: 50px;
+    width: 280px;
+    border: none;
+    border-bottom: 1px solid var(--accent);
+    background-color: transparent;
+    outline: none;
+    margin-top: 30px;
+}
+
+input::placeholder {
+    color: #fff !important;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+}
+span{
+    text-align: left !important;
+    color:#FFA500;
+}
