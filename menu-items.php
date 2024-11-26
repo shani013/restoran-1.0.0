@@ -19,9 +19,9 @@ $result=mysqli_fetch_all($data,MYSQLI_ASSOC);
                         <?php if(isset($_SESSION['name'])): ?>
                         <a href="#" class='btn btn-sm btn-danger mt-3 add-to-cart-btn'>Add to Cart</a>
                         <?php endif;?>
-                    </div>
-                    <!-- Hidden Add to Cart Button -->
-                    
+                            
+                            
+                    </div>                    
                 </div>
             </div>
         <?php } ?>
@@ -34,7 +34,7 @@ $result=mysqli_fetch_all($data,MYSQLI_ASSOC);
     /* Hide the Add to Cart button initially */
     .add-to-cart-btn {
         position: absolute;
-        left: 50%;
+        left: 61%;
         bottom:70%;
         opacity: 0;
         transition: opacity 0.3s ease;

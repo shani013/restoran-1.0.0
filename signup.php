@@ -6,7 +6,9 @@ if(isset($_POST['signin']))
 {
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
     $phone = $_POST['phone'];
 
     $query="SELECT email FROM users WHERE email='$email'";

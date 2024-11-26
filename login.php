@@ -8,15 +8,16 @@ if (isset($_POST['login']))
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     // Fetch both username and password from the database for the given username
-    $query = "SELECT name,email, password FROM users WHERE email='$email'";
+    $query = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
         if (mysqli_num_rows($result) > 0) {
             $data = mysqli_fetch_assoc($result);
-
-            if ($data['password'] == $password) {
+           if (password_verify($password, $data['password'])) {
                 $_SESSION['name'] = $data['name'];
+                $_SESSION['id'] = $data['id'];
+
                 header("Location: index.php");
                 exit();
             } else {
