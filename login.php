@@ -17,9 +17,19 @@ if (isset($_POST['login']))
            if (password_verify($password, $data['password'])) {
                 $_SESSION['name'] = $data['name'];
                 $_SESSION['id'] = $data['id'];
+                $_SESSION['role'] = $data['role'];
 
-                header("Location: index.php");
-                exit();
+                if($data['role'] =='-1')
+                {
+                    header('Location:admin.php');
+                    exit();
+                }
+                else{
+                    header("Location: index.php");
+                    exit();
+                }
+
+                
             } else {
                 $error_message='password is incorrect';
             }

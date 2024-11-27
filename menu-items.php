@@ -17,10 +17,8 @@ $result=mysqli_fetch_all($data,MYSQLI_ASSOC);
                         </h5>
                         <small class="fst-italic"><?php echo $row['description'];?></small>
                         <?php if(isset($_SESSION['name'])): ?>
-                        <a href="#" class='btn btn-sm btn-danger mt-3 add-to-cart-btn'>Add to Cart</a>
-                        <?php endif;?>
-                            
-                            
+                        <a href="cart.php?product_id=<?php echo $row['id']; ?>" class='btn btn-sm btn-danger mt-3 add-to-cart-btn'>Add to Cart</a>
+                        <?php endif;?>    
                     </div>                    
                 </div>
             </div>

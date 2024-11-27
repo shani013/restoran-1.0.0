@@ -10,6 +10,7 @@ if(isset($_POST['signin']))
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     $phone = $_POST['phone'];
+    $role='1';
 
     $query="SELECT email FROM users WHERE email='$email'";
     $result=mysqli_query($conn,$query);
@@ -21,11 +22,11 @@ if(isset($_POST['signin']))
     }
     else
     {
-        $query = "INSERT INTO users(name,phone,email, password) VALUES ('$name','$phone', '$email', '$password')";
+        $query = "INSERT INTO users(name,phone,email, password,role) VALUES ('$name','$phone', '$email', '$password','$role')";
         if(mysqli_query($conn,$query))
         {
             $_SESSION['name'] = $name;
-            header('location:index.php');
+            header('location:login.php');
             exit();
         }
         else
