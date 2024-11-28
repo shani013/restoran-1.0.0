@@ -21,7 +21,7 @@ if (isset($_POST['login']))
 
                 if($data['role'] =='-1')
                 {
-                    header('Location:admin.php');
+                    header('Location:admin/index.php');
                     exit();
                 }
                 else{
