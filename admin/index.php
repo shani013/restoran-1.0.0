@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,29 +35,19 @@
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
             <i class="fas fa-bars"></i>
         </button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                    aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </form>
         <!-- Navbar-->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
                 <!-- User Info Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i> John Doe
+                        <i class="bi bi-person-circle"></i> <?php echo $_SESSION['name']; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="#!"><i class="bi bi-person"></i> Profile</a></li>
                         <li><a class="dropdown-item" href="#!"><i class="bi bi-gear"></i> Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#!"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -73,74 +64,22 @@
                         <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Interface</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Layouts
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                            </nav>
-                        </div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-                            aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            Pages
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth">
-                                    Authentication
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="login.html">Login</a>
-                                        <a class="nav-link" href="register.html">Register</a>
-                                        <a class="nav-link" href="password.html">Forgot Password</a>
-                                    </nav>
-                                </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Error
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="401.html">401 Page</a>
-                                        <a class="nav-link" href="404.html">404 Page</a>
-                                        <a class="nav-link" href="500.html">500 Page</a>
-                                    </nav>
-                                </div>
-                            </nav>
-                        </div>
+                        </a> 
+                        
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Charts
                         </a>
-                        <a class="nav-link" href="tables.html">
+                        <a class="nav-link" href="pending.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Tables
+                            Pending Orders
                         </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    Start Bootstrap
+                    <?php echo $_SESSION['name'] ;?>
                 </div>
             </nav>
         </div>
@@ -189,16 +128,11 @@
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-danger text-white mb-4">
                                 <div class="card-body d-flex justify-content-between custom-btn" >
-                                    <pack class='card-title'>New Admin</pack>
-                                    <div>
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addproduct" >
-                                            <i class="bi bi-plus-circle"></i>
-                                        </button>
-                                    </div>
+                                    <pack class='card-title'> Pending Orders</pack>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    <a class="small text-white stretched-link" href="pending.php">View Details</a>
+                                    <i class="fas fa-angle-right small text-white"></i>
                                 </div>
                             </div>
                         </div>  
@@ -212,7 +146,7 @@
                                         <h1 class="modal-title fs-5" id="staticBackdropLabel">Product Details</h1>
                                     </div>
                                     <div class="modal-body d-flex justify-content-center ">
-                                        <form action="product.php" method="post" enctype="multipart/form-data">
+                                        <form action="addProduct.php" method="post" enctype="multipart/form-data">
                                             <label for="name" class="form-label ">Name:</label><br>
                                             <input type="text" class="form-control" name='name'><br>
                                             <label for="price" class="form-label ">price</label><br>
@@ -224,7 +158,7 @@
                                                 placeholder='description of item'></textarea><br><br>
                                             <div class="modal-footer justify-content-center ">
                                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-primary" name="submit">Save</button>
+                                                <button type="submit" class="btn btn-primary" name="add-product">Save</button>
                                             </div>
                                         </form>
                                     </div>
@@ -240,7 +174,7 @@
                                         <h1 class="modal-title fs-5" id="staticBackdropLabel">Chefs Details</h1>
                                     </div>
                                     <div class="modal-body d-flex justify-content-center ">
-                                        <form action="chef.php" method="post" enctype="multipart/form-data">
+                                        <form action="addChef.php" method="post" enctype="multipart/form-data">
                                             <label for="name" class="form-label ">Name:</label><br>
                                             <input type="text" class="form-control" name='name' required><br>
                                             <label for="designation" class="form-label ">Designation</label><br>
@@ -250,13 +184,37 @@
                                             <br>
                                             <div class="modal-footer justify-content-center ">
                                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-primary" name="submit">Save</button>
+                                                <button type="submit" class="btn btn-primary" name="add-chef">Save</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>                          
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area me-1"></i>
+                                    Order Status
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="myStatusChart" width="100%" height="40"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar me-1"></i>
+                                        Most Selling Product
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="myMostSellingChart" width="100%" height="40"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-xl-6">
@@ -792,114 +750,206 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Fetch data from the server
-            fetch("chart.php")
-                .then(response => response.json())
-                .then(data => {
-                    //Extract monthly Sales
-                    const monthlyLabels = data.monthly_sales.map(item => item.date);
-                    const monthlySalesData = data.monthly_sales.map(item => item.bill);
+        // Fetch data from the server
+        fetch("chart.php")
+            .then(response => response.json())
+            .then(data => {
+                // Extract monthly sales
+                const monthlyLabels = data.monthly_sales.map(item => item.date);
+                const monthlySalesData = data.monthly_sales.map(item => item.bill);
+                
+                // Extract order statuses
+                const orderStatuses = data.order_statuses;
+                // Map 'Y' to 'Completed' and 'N' to 'Pending'
+                const mappedStatuses = orderStatuses.map(status => (status === 'Y' ? 'Completed' : 'Pending'));
+                
+                // Count occurrences of each mapped status
+                const statusCounts = mappedStatuses.reduce((acc, status) => {
+                    acc[status] = (acc[status] || 0) + 1;
+                    return acc;
+                }, {});
 
-                    // Extract day-specific sales data
-                    const dayLabels = data.day_sales.map(item => item.date);
-                    const daySalesData = data.day_sales.map(item => item.bill);
+                // Create labels and data arrays for the status chart
+                const statusLabels = Object.keys(statusCounts); // e.g., ['Completed', 'Pending']
+                const statusData = Object.values(statusCounts); // e.g., [5, 2]
 
-                    // Line Chart
-                    var ctxLine = document.getElementById("myAreaChart").getContext("2d");
-                    var myLineChart = new Chart(ctxLine, {
-                        type: 'line',
-                        data: {
-                            labels: dayLabels, // Set dynamic dates
-                            datasets: [{
-                                label: "Sales",
-                                lineTension: 0.3,
-                                backgroundColor: "rgba(2,117,216,0.2)",
-                                borderColor: "rgba(2,117,216,1)",
-                                pointRadius: 5,
-                                pointBackgroundColor: "rgba(2,117,216,1)",
-                                pointBorderColor: "rgba(255,255,255,0.8)",
-                                pointHoverRadius: 5,
-                                pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                                pointHitRadius: 50,
-                                pointBorderWidth: 2,
-                                data: daySalesData, // Set dynamic sales
-                            }],
-                        },
-                        options: {
-                            scales: {
-                                xAxes: [{
-                                    time: {
-                                        unit: 'date'
-                                    },
-                                    gridLines: {
-                                        display: false
-                                    },
-                                    ticks: {
-                                        maxTicksLimit: 7
-                                    }
-                                }],
-                                yAxes: [{
-                                    ticks: {
-                                        min: 0,
-                                        max: Math.max(...daySalesData) + 10, // Set max dynamically
-                                        maxTicksLimit: 5
-                                    },
-                                    gridLines: {
-                                        color: "rgba(0, 0, 0, .125)",
-                                    }
-                                }],
+                // Extract day-specific sales data
+                const dayLabels = data.day_sales.map(item => item.date);
+                const daySalesData = data.day_sales.map(item => item.bill);
+
+                // Extract product sales data
+                const productLabels = data.product_sales.map(item => item.name); // Product names
+                const productQuantities = data.product_sales.map(item => item.qty); // Quantities
+
+                // Line Chart for Daily Sales
+                var ctxLine = document.getElementById("myAreaChart").getContext("2d");
+                var myLineChart = new Chart(ctxLine, {
+                    type: 'line',
+                    data: {
+                        labels: dayLabels, // Set dynamic dates
+                        datasets: [{
+                            label: "Sales $ ",
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(2,117,216,0.2)",
+                            borderColor: "rgba(2,117,216,1)",
+                            pointRadius: 5,
+                            pointBackgroundColor: "rgba(2,117,216,1)",
+                            pointBorderColor: "rgba(255,255,255,0.8)",
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                            pointHitRadius: 50,
+                            pointBorderWidth: 2,
+                            data: daySalesData, // Set dynamic sales
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                time: {
+                                    unit: 'day',
+                                },
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 7
+                                }
                             },
-                            legend: {
-                                display: false
-                            }
-                        }
-                    });
-
-                    // Bar Chart
-                    var ctxBar = document.getElementById("myBarChart").getContext("2d");
-                    var myBarChart = new Chart(ctxBar, {
-                        type: 'bar',
-                        data: {
-                            labels: monthlyLabels, // Same dynamic dates
-                            datasets: [{
-                                label: "Revenue",
-                                backgroundColor: "rgba(2,117,216,1)",
-                                borderColor: "rgba(2,117,216,1)",
-                                data: monthlySalesData, // Same dynamic sales
-                            }],
-                        },
-                        options: {
-                            scales: {
-                                xAxes: [{
-                                    time: {
-                                        unit: 'date'
-                                    },
-                                    gridLines: {
-                                        display: false
-                                    },
-                                    ticks: {
-                                        maxTicksLimit: 7
-                                    }
-                                }],
-                                yAxes: [{
-                                    ticks: {
-                                        min: 0,
-                                        max: Math.max(...monthlySalesData) + 10, // Set max dynamically
-                                        maxTicksLimit: 5
-                                    },
-                                    gridLines: {
-                                        color: "rgba(0, 0, 0, .125)",
-                                    }
-                                }],
+                            y: {
+                                ticks: {
+                                    min: 0,
+                                    max: Math.max(...daySalesData) + 10, // Set max dynamically
+                                    maxTicksLimit: 5
+                                },
+                                grid: {
+                                    color: "rgba(0, 0, 0, .125)",
+                                }
                             },
-                            legend: {
-                                display: false
-                            }
+                        },
+                        legend: {
+                            display: false
                         }
-                    });
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        });
+                    }
+                });
+
+                // Bar Chart for Monthly Sales
+                var ctxBar = document.getElementById("myBarChart").getContext("2d");
+                var myBarChart = new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: monthlyLabels, // Dynamic month labels
+                        datasets: [{
+                            label: "Revenue $ ",
+                            backgroundColor: "rgba(2,117,216,1)",
+                            borderColor: "rgba(2,117,216,1)",
+                            data: monthlySalesData, // Dynamic sales data
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                time: {
+                                    unit: 'month',
+                                },
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 7
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    min: 0,
+                                    max: Math.max(...monthlySalesData) + 10, // Set max dynamically
+                                    maxTicksLimit: 5
+                                },
+                                grid: {
+                                    color: "rgba(0, 0, 0, .125)",
+                                }
+                            },
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+
+                // Pie Chart for Order Statuses
+                var ctxPie = document.getElementById("myStatusChart").getContext("2d");
+                var myPieChart = new Chart(ctxPie, {
+                    type: 'pie',
+                    data: {
+                        labels: statusLabels, // Order status labels (e.g., "Completed", "Pending")
+                        datasets: [{
+                            data: statusData, // Status counts
+                            backgroundColor: [
+                                "rgba(75,192,192,0.2)", // Completed
+                                "rgba(255,99,132,0.2)"  // Pending
+                            ],
+                            borderColor: [
+                                "rgba(75,192,192,1)",   // Completed
+                                "rgba(255,99,132,1)"    // Pending
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                });
+
+                // Bar Chart for Most Selling Products
+                var ctxProductBar = document.getElementById("myMostSellingChart").getContext("2d");
+                var productBarChart = new Chart(ctxProductBar, {
+                    type: 'bar',
+                    data: {
+                        labels: productLabels, // Product names as labels
+                        datasets: [{
+                            label: "Quantity Sold",
+                            backgroundColor: "rgba(75, 192, 192, 0.5)",
+                            borderColor: "rgba(75, 192, 192, 1)",
+                            borderWidth: 1,
+                            data: productQuantities, // Quantities as data
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Products'
+                                },
+                                ticks: {
+                                    maxRotation: 90,
+                                    minRotation: 45
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                min: 5, // Start the Y-axis from 5
+                                title: {
+                                    display: true,
+                                    text: 'Quantity Sold'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        },
+                    }
+                });
+
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    });
+
     </script>
 
     

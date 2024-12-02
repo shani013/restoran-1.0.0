@@ -8,7 +8,7 @@ $chefs = mysqli_fetch_all($data, MYSQLI_ASSOC);
     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
         <div class="team-item text-center rounded overflow-hidden">
             <div class="rounded-circle overflow-hidden m-4">
-                <img class="img-fluid" src="<?php echo $row['image']; ?>">
+                <img class="img-fluid" src="<?php echo str_replace('../', '', $row['image']); ?>">
             </div>
             <h5 class="mb-0"><?php echo $row['name']; ?></h5>
             <small><?php echo $row['designation']; ?></small>

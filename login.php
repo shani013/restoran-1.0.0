@@ -49,9 +49,11 @@ if (isset($_POST['login']))
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Form</title>
     <link rel="stylesheet" href="login.css" />
+    
 </head>
 <body>
-    <form class='form' action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    
+    <form class='form' action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" >
         <h2>Login</h2>
         <?php if (!empty($error_message)) { ?>
             <div style="color: red; margin-bottom: 10px;"><?php echo $error_message; ?></div>
@@ -60,7 +62,8 @@ if (isset($_POST['login']))
         <input type="email" name="email" placeholder="email" autocomplete="email" class="input-field" required />
         <input type="password" name="password" placeholder="your password" autocomplete="password" class="input-field" required />
         <span>Not have an account <a href="signup.php">Sign up</a></span>
-        <button type="submit" name="login">Login</button>
+        <button type="submit" name="login" id='login-btn'>Login</button>
     </form>
+    
 </body>
 </html>
