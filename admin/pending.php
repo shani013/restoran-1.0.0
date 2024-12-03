@@ -13,7 +13,10 @@ if (isset($_POST['confirm-order']))
     } 
 }
 $query = 'SELECT 
+   
     orders.id AS order_id,
+    orders.date AS order_date,
+    orders.time AS order_time,
     users.name AS username, 
     orders.status AS order_status,
     GROUP_CONCAT(products.name) AS product_names
@@ -88,6 +91,9 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
         </button>
         <!-- Navbar-->
         <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <!-- Add left-aligned content here if needed -->
+            </ul>
             <ul class="navbar-nav ">
                 <!-- User Info Dropdown -->
                 <li class="nav-item dropdown">
@@ -116,17 +122,21 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                         </a> 
                         
                         <div class="sb-sidenav-menu-heading">Addons</div>
-                        <a class="nav-link" href="charts.html">
+                        <a class="nav-link" href="charts.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Charts
                         </a>
                         <a class="nav-link" href="pending.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pending Orders
+                            <div class="sb-nav-link-icon text-light"><i class="bi bi-hourglass-split"></i>Pending Orders</div>
+                            
                         </a>
-                        <a class="nav-link" href="tables.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Tables
+                        <a class="nav-link" href="productDetails.php">
+                            <div class="sb-nav-link-icon"><i class="bi bi-clipboard"></i></div>
+                            Products
+                        </a>
+                        <a class="nav-link" href="chefDetails.php">
+                            <div class="sb-nav-link-icon "><i class="bi bi-egg-fried"></i></div>
+                            Chefs
                         </a>
                     </div>
                 </div>
@@ -134,7 +144,7 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                     <div class="small">Logged in as:</div>
                     <?php echo $_SESSION['name'] ;?>
                 </div>
-            </nav>
+            </nav> 
         </div>
         <div id="layoutSidenav_content">
             <main>
@@ -153,6 +163,8 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                                     <th>Sr</th>
                                     <th>Customer Name</th>
                                     <th>Order Details</th>
+                                    <th>Order Date</th>
+                                    <th>Order time</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -163,14 +175,17 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                                             <td><?php echo $count++; ?></td>
                                             <td><?php echo $value['username']; ?></td>
                                             <td><?php echo $value['product_names']; ?></td>
+                                            <td><?php echo date('F j, Y', strtotime($value['order_date'])); ?></td> <!-- Month name and date -->
+                                            <td><?php echo date('g:i A', strtotime($value['order_time'])); ?></td> <!-- Time in AM/PM format -->
+
                                             <?php if ($value['order_status'] == 'Y'): ?>
                                                 <td><span class='text-success'>Delivered</span></td>
                                             <?php else: ?>
                                                 <td>
                                                     <span class='text-danger'>Pending</span>
-                                                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" >
                                                         <input type="hidden" value="<?php echo htmlspecialchars($value['order_id']); ?>" name="order_id">
-                                                        <button class="btn btn-sm btn-danger" type="submit" name="confirm-order">Confirm</button>
+                                                        <button class="btn btn-sm btn-danger" type="submit" name="confirm-order" >Confirm</button>
                                                     </form>
                                                 </td>
                                             <?php endif; ?>

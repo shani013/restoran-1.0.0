@@ -18,7 +18,7 @@ if (isset($_POST['add-product'])) {
         // Insert the name, price, image URL, and description into the database
         $sql = "INSERT INTO products (name,description,image,price) VALUES ('$name','$description','$target_file','$price')";
         $result = mysqli_query($conn, $sql);
-        header('location:index.php');
+        header('location:productDetails.php');
         exit();
     }
 

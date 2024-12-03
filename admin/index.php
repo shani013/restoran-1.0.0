@@ -36,7 +36,10 @@
             <i class="fas fa-bars"></i>
         </button>
         <!-- Navbar-->
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse " id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <!-- Add left-aligned content here if needed -->
+            </ul>
             <ul class="navbar-nav ">
                 <!-- User Info Dropdown -->
                 <li class="nav-item dropdown">
@@ -62,18 +65,25 @@
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
                         <a class="nav-link" href="index.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
+                            <div class="sb-nav-link-icon text-light"><i class="fas fa-tachometer-alt"></i>Dashboard</div>
                         </a> 
                         
                         <div class="sb-sidenav-menu-heading">Addons</div>
-                        <a class="nav-link" href="charts.html">
+                        <a class="nav-link" href="charts.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Charts
                         </a>
                         <a class="nav-link" href="pending.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            <div class="sb-nav-link-icon"><i class="bi bi-hourglass-split"></i></div>
                             Pending Orders
+                        </a>
+                        <a class="nav-link" href="productDetails.php">
+                            <div class="sb-nav-link-icon"><i class="bi bi-clipboard"></i></div>
+                            Products
+                        </a>
+                        <a class="nav-link" href="chefDetails.php">
+                            <div class="sb-nav-link-icon "><i class="bi bi-egg-fried"></i></div>
+                            Chefs
                         </a>
                     </div>
                 </div>
@@ -104,7 +114,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
+                                    <a class="small text-white stretched-link" href="productDetails.php">View Details</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
@@ -120,7 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
+                                    <a class="small text-white stretched-link" href="chefDetails.php">View Details</a>
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
@@ -728,10 +738,10 @@
                     </div>
                 </div>
             </main>
-            <footer class="py-4 bg-light mt-auto">
+            <footer class="py-4 bg-dark mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                        <div class="text-white">Copyright &copy; RESTOREN <?php echo date("Y"); ?></div>
                         <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

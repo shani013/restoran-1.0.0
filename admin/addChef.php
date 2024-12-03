@@ -17,7 +17,7 @@ if (isset($_POST['add-chef'])){
         // Insert the name, price, image URL, and description into the database
         $sql = "INSERT INTO chefs (name,designation,image) VALUES ('$name','$designation','$target_file')";
         $result = mysqli_query($conn, $sql);
-        header('Location: index.php');
+        header('Location: chefDetails.php');
         exit();
     }
 
