@@ -226,7 +226,7 @@ $charges=5;
                     </a>
                 <?php else: ?>    
                     <a data-bs-toggle="tooltip" data-bs-placement="top" title="Order in Progress">
-                        <i class="bi bi-info-circle text-danger" style="font-size: 30px;" ></i>
+                        <i class="bi bi-info-circle text-danger ms-3 " style="font-size: 30px; " ></i>
                     </a>
                 <?php endif;?>
             <?php endif; ?>

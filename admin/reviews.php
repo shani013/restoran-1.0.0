@@ -1,91 +1,54 @@
-<?php 
+<?php
 include "db-connection.php";
 session_start();
-// Check if the user role is not "-1"
-if (!isset($_SESSION['role']) || $_SESSION['role'] != "-1") {
-    // Redirect to accessDenied.php
+if(!isset($_SESSION['role'] ) || $_SESSION['role'] !='-1')
+{
     header("Location: ../404.php");
-    exit();
+    exit;
 }
-if(isset($_POST['chef_id']))
-{
-    $chef_id = mysqli_real_escape_string($conn, $_POST['chef_id']);
-    $sql = "SELECT * FROM chefs WHERE id='$chef_id'";
-    $result = mysqli_query($conn, $sql);
-    if ($result) {
-        $chef = mysqli_fetch_assoc($result);
-    }
-}
-if (isset($_POST['update_chef'])) {
-    $chef_id = mysqli_real_escape_string($conn, $_POST['chef_id']);
-    $name = mysqli_real_escape_string($conn, $_POST['name']);
-    $designation = mysqli_real_escape_string($conn, $_POST['designation']);
-    
-    $target_file = null;
+$query="SELECT 
+    reviews.id AS id,
+    reviews.user_id AS user_id,
+    reviews.image AS image,
+    reviews.message AS message,
+    users.name AS name
+FROM 
+    reviews
+JOIN 
+    users ON users.id = reviews.user_id";
 
-    // Check if a new file is uploaded
-    if (!empty($_FILES["image"]["tmp_name"])) {
-        $target_dir = "../uploads/chefs/";
-        $target_file = $target_dir . uniqid() . basename($_FILES["image"]["name"]);
-        
-        // Attempt to move the uploaded file
-        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            echo "Error uploading the file.";
-            exit();
-        }
-    }
-
-    // Prepare SQL query to update the product
-    if ($target_file) {
-        $sql = "UPDATE chefs SET 
-                    name = '$name', 
-                    designation = '$designation', 
-                    image = '$target_file', 
-                     
-                WHERE id = '$chef_id'";
-    } else {
-        $sql = "UPDATE chefs SET 
-                    name = '$name', 
-                    designation = '$designation', 
-                WHERE id = '$chef_id'";
-    }
-
-    // Execute the query and redirect
-    if (mysqli_query($conn, $sql)) {
-        header("Location: chefDetails.php"); // Redirect after success
-        exit();
-    } else {
-        echo "Error updating the product: " . mysqli_error($conn);
-    }
-}
-if(isset($_POST['cancel_update']))
-{
-    header("Location: chefDetails.php"); // Redirect after success
-        exit();
-}
-
-
-
+$result = mysqli_query($conn, $query);
+$data=mysqli_fetch_all($result,MYSQLI_ASSOC);
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
-</head>
-<body>
-    <!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Update Chefs</title>
+    <title>Customers</title>
+        <style>
+            .table thead {
+                background-color: #fea116;
+                color: #fff;
+            }
+            .table th, .table td {
+                text-align: center;
+                vertical-align: middle;
+            }
+            .table-striped tbody tr:nth-child(odd) {
+                background-color: #f9f9f9;
+            }
+            .table-hover tbody tr:hover {
+                background-color: #fea116;
+            }
+            .table-responsive {
+                margin-top: 20px;
+            }
+        </style>
 
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -136,7 +99,7 @@ if(isset($_POST['cancel_update']))
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Charts
+                            Stats
                         </a>
                         <a class="nav-link" href="pending.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -147,7 +110,11 @@ if(isset($_POST['cancel_update']))
                             Products
                         </a>
                         <a class="nav-link" href="chefDetails.php">
-                            <div class="sb-nav-link-icon text-light"><i class="bi bi-egg-fried"></i>Chefs</div>
+                            <div class="sb-nav-link-icon "><i class="bi bi-egg-fried"></i></div>
+                            Chefs
+                        </a>
+                        <a class="nav-link" href="reviews.php">
+                            <div class="sb-nav-link-icon text-light"><i class="bi bi-chat-left-dots"></i>Reviews</div>
                         </a>
                     </div>
                 </div>
@@ -160,34 +127,50 @@ if(isset($_POST['cancel_update']))
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4"> Update Chefs</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Update Chefs </li>
-                    </ol>
-                </div>
-                <div class="container">
-                    <div class="modal-body d-flex justify-content-center mb-4">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
-                            <input type="hidden" class="form-control" value="<?php echo isset($chef['id']) ? $chef['id'] : ''; ?>" name="chef_id">
-
-                            <label for="name" class="form-label">Name:</label><br>
-                            <input type="text" class="form-control" value="<?php echo isset($chef['name']) ? $chef['name'] : ''; ?>" name="name"><br>
-
-                            <label for="image" class="form-label">Select Image:</label><br>
-                            <input type="file" name="image" class="form-control"><br>
-
-                            <label for="description" class="form-label">Designation:</label><br>
-                            <input type="text" class="form-control" value="<?php echo isset($chef['designation']) ? $chef['designation'] : ''; ?>" name="designation"><br>
-
-                            <div class="modal-footer justify-content-center">
-                                <button type="submit" class="btn btn-danger" name="cancel_update" >Cancel</button>
-                                <button type="submit" class="btn btn-success ms-2" name="update_chef">Save</button>
-                            </div>
-                        </form>
-
+                    <h1 class="mt-4">Reviews</h1>
+                    <div class="container-fluid d-flex justify-content-between">
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Reviews details</li>
+                        </ol>
+                        
                     </div>
-                </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sr</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Message</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $count = 1;?>
+                                <?php foreach($data as $review): ?>
+                                <tr>
+                                    <td><?php echo $count++?></td>
+                                    <td>
+                                        <img src="<?php echo $review['image'];?>" alt="<?php echo $review['name'];?>" style="width: 60px; height: 60px;">
+                                    </td>
+                                    <td ><?php echo $review['name'];?></td>
+                                    <td class="col-9 text-start"><?php echo $review['message'];?></td>
+                                    <td>
+                                        <form action="deleteReview.php" method="post" class="m-0 p-0" style="display:inline;">
+                                            <input type="hidden" value="<?php echo $review['id']; ?>" name="review_id">
+                                            <button class="btn btn-sm btn-danger" type="submit">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php endforeach;?>
+                            </tbody>
+                        </table>   
+                        
+                    </div>
+
             </main>
             <footer class="py-4 bg-dark mt-auto">
                 <div class="container-fluid px-4">

@@ -1,7 +1,13 @@
 <?php 
 include 'db-connection.php';
 session_start();
-if (isset($_POST['confirm-order'])) 
+// Check if the user role is not "-1"
+if (!isset($_SESSION['role']) || $_SESSION['role'] != "-1") {
+    // Redirect to accessDenied.php
+    header("Location: ../404.php");
+    exit();
+}
+if (isset($_POST['confirm-order']) && $_SESSION['role']=='-1') 
 {
     $order_id = mysqli_real_escape_string($conn, $_POST['order_id']);
     
@@ -52,7 +58,7 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
 
         <style>
         .table thead {
-            background-color: #007bff;
+            background-color: #fea116;
             color: #fff;
         }
         .table th, .table td {
@@ -63,7 +69,7 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
             background-color: #f9f9f9;
         }
         .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
+            background-color: #fea116;
         }
         .table-responsive {
             margin-top: 20px;
@@ -124,7 +130,7 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Charts
+                            Stats
                         </a>
                         <a class="nav-link" href="pending.php">
                             <div class="sb-nav-link-icon text-light"><i class="bi bi-hourglass-split"></i>Pending Orders</div>
@@ -137,6 +143,14 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                         <a class="nav-link" href="chefDetails.php">
                             <div class="sb-nav-link-icon "><i class="bi bi-egg-fried"></i></div>
                             Chefs
+                        </a>
+                        <a class="nav-link" href="customers.php">
+                            <div class="sb-nav-link-icon "><i class="bi bi-people-fill"></i></div>
+                            Customers
+                        </a>
+                        <a class="nav-link" href="reviews.php">
+                            <div class="sb-nav-link-icon "><i class="bi bi-chat-left-dots"></i></div>
+                            Reviews
                         </a>
                     </div>
                 </div>

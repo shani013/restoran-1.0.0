@@ -9,12 +9,19 @@ if (isset($_POST['confirm-order']) && isset($_SESSION['id'])) {
     $user_id = $_SESSION['id'];
     $city = mysqli_real_escape_string($conn, $_POST['city']);
     $province = mysqli_real_escape_string($conn, $_POST['province']);
-    $address = mysqli_real_escape_string($conn, $_POST['address']);
+    // Get the address from POST
+    $address = $_POST['address'];
+
+    // Remove newline and carriage return characters
+    $address = str_replace(array("\r", "\n"), '', $address);
+
+    // Escape special characters for safe SQL insertion
+    $address = mysqli_real_escape_string($conn, $address);
 
     // Concatenate the address components into one variable
     $full_address = $city . ', ' . $province . ', ' . $address;
 
-    $bill = mysqli_real_escape_string($conn, $_POST['bill']);  // Sanitize the bill value
+    $bill =  $_POST['bill'];  // Sanitize the bill value
     $details = $_POST['details']; // Use the raw JSON string directly
 
     $status = 'N';  // Default status for new order
@@ -31,7 +38,7 @@ if (isset($_POST['confirm-order']) && isset($_SESSION['id'])) {
         die("Error preparing statement: " . mysqli_error($conn));
     }
 
-    mysqli_stmt_bind_param($stmt, 'iissss', $user_id, $bill, $details, $status, $date, $time);
+    mysqli_stmt_bind_param($stmt, 'idssss', $user_id, $bill, $details, $status, $date, $time);
 
     if (mysqli_stmt_execute($stmt)) {
         // Get the last inserted order ID
@@ -67,5 +74,9 @@ if (isset($_POST['confirm-order']) && isset($_SESSION['id'])) {
     }
     mysqli_stmt_close($stmt);
 }   
+else{
+    header("Location: login.php");
+    exit();
+}
 
 ?>

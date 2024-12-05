@@ -2,6 +2,11 @@
 include_once 'db-connection.php';
 session_start();
 $error_message='';
+if(isset($_SESSION['name'])){
+    header("Location: index.php");
+    exit();
+ 
+}
 
 if (isset($_POST['login']))
  {

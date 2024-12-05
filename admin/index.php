@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php session_start();
+// Check if the user role is not "-1"
+if (!isset($_SESSION['role']) || $_SESSION['role'] != "-1") {
+    // Redirect to accessDenied.php
+    header("Location: ../404.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Dashboard - Admin</title>
         <style>
             .custom-btn {
             position: relative;
@@ -71,7 +79,7 @@
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Charts
+                            Stats
                         </a>
                         <a class="nav-link" href="pending.php">
                             <div class="sb-nav-link-icon"><i class="bi bi-hourglass-split"></i></div>
@@ -84,6 +92,14 @@
                         <a class="nav-link" href="chefDetails.php">
                             <div class="sb-nav-link-icon "><i class="bi bi-egg-fried"></i></div>
                             Chefs
+                        </a>
+                        <a class="nav-link" href="customers.php">
+                            <div class="sb-nav-link-icon "><i class="bi bi-people-fill"></i></div>
+                            Customers
+                        </a>
+                        <a class="nav-link" href="reviews.php">
+                            <div class="sb-nav-link-icon "><i class="bi bi-chat-left-dots"></i></div>
+                            Reviews
                         </a>
                     </div>
                 </div>

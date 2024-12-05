@@ -14,7 +14,7 @@ body {
     /* Remove default padding */
     height: 100vh;
     /* Full viewport height */
-    background-image: url('bg.jpg');
+    background-image: url('bg-hero.jpg');
     /* Set background image */
     background-size: cover;
     /* Ensure the image covers the entire background */

@@ -1,14 +1,28 @@
-<?php 
-include 'db-connection.php';
+<?php
+include "db-connection.php";
 session_start();
 if(!isset($_SESSION['role'] ) || $_SESSION['role'] !='-1')
 {
     header("Location: ../404.php");
     exit;
 }
-    $query = "SELECT * FROM chefs";
-    $result = mysqli_query($conn, $query);
-    $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
+$query="SELECT 
+    u.name AS name,
+    u.phone AS phone,
+    u.email AS email,
+    COUNT(o.user_id) AS count,
+    c.address AS address
+FROM 
+    users u
+JOIN 
+    customers c ON u.id = c.user_id
+LEFT JOIN 
+    orders o ON u.id = o.user_id
+GROUP BY 
+    u.id, u.name, c.address";
+$result = mysqli_query($conn, $query);
+$data=mysqli_fetch_all($result,MYSQLI_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +32,7 @@ if(!isset($_SESSION['role'] ) || $_SESSION['role'] !='-1')
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Chefs</title>
+    <title>Customers</title>
         <style>
             .table thead {
                 background-color: #fea116;
@@ -32,7 +46,7 @@ if(!isset($_SESSION['role'] ) || $_SESSION['role'] !='-1')
                 background-color: #f9f9f9;
             }
             .table-hover tbody tr:hover {
-                background-color: #f1f1f1;
+                background-color: #fea116;
             }
             .table-responsive {
                 margin-top: 20px;
@@ -99,11 +113,11 @@ if(!isset($_SESSION['role'] ) || $_SESSION['role'] !='-1')
                             Products
                         </a>
                         <a class="nav-link" href="chefDetails.php">
-                            <div class="sb-nav-link-icon text-light"><i class="bi bi-egg-fried"></i>Chefs</div>
+                            <div class="sb-nav-link-icon "><i class="bi bi-egg-fried"></i></div>
+                            Chefs
                         </a>
                         <a class="nav-link" href="customers.php">
-                            <div class="sb-nav-link-icon "><i class="bi bi-people-fill"></i></div>
-                            Customers
+                            <div class="sb-nav-link-icon text-light"><i class="bi bi-people-fill"></i>Customers</div>
                         </a>
                         <a class="nav-link" href="reviews.php">
                             <div class="sb-nav-link-icon "><i class="bi bi-chat-left-dots"></i></div>
@@ -120,83 +134,58 @@ if(!isset($_SESSION['role'] ) || $_SESSION['role'] !='-1')
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Chefs</h1>
+                    <h1 class="mt-4">Customers</h1>
                     <div class="container-fluid d-flex justify-content-between">
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Chefs details</li>
+                            <li class="breadcrumb-item active">Customers details</li>
                         </ol>
-                        <button class="btn  btn-success" data-bs-toggle="modal" data-bs-target="#addchefs" >
-                            New Chef
-                            <i class="bi bi-plus-circle"></i>
-                        </button>
-                        <!--chefs Modal-->
-                        <div class="modal fade" id="addchefs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog ">
-                                <div class="modal-content ">
-                                    <div class="modal-header d-flex justify-content-center ">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Chefs Details</h1>
-                                    </div>
-                                    <div class="modal-body d-flex justify-content-center ">
-                                        <form action="addChef.php" method="post" enctype="multipart/form-data">
-                                            <label for="name" class="form-label ">Name:</label><br>
-                                            <input type="text" class="form-control" name='name' required><br>
-                                            <label for="designation" class="form-label ">Designation</label><br>
-                                            <input type="text" name='designation' class="form-control" required><br>
-                                            <label for="image" class="form-label ">Select Image:</label><br>
-                                            <input type="file" name="image" class="form-control" required><br>
-                                            <br>
-                                            <div class="modal-footer justify-content-center ">
-                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-primary" name="add-chef">Save</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
+                        
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>Sr</th>
-                                    <th>Image</th>
-                                    <th>Chef Name</th>
-                                    <th>Designation</th>
-                                    <th>Actions</th>
+                                    <th>Customer Name</th>
+                                    <th>Total Orders</th>
+                                    <th>Address</th>
+                                    <th>City</th>
+                                    <th>Province</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $count = 1;?>
-                                <?php foreach($data as $chef): ?>
+                                <?php foreach($data as $customer): ?>
                                 <tr>
                                     <td><?php echo $count++?></td>
-                                    <td>
-                                        <img src="<?php echo $chef['image'];?>" alt="<?php echo $chef['name'];?>" style="width: 60px; height: 60px;">
-                                    </td>
-                                    <td><?php echo $chef['name'];?></td>
-                                    <td >
-                                        
-                                            <?php echo $chef['designation'];?>
-                                        
-                                    </td>
-                                    <td >
-                                        <form action="updateChef.php" method="post" class="m-0 p-0" style="display:inline;">
-                                            <input type="hidden" value="<?php echo $chef['id']; ?>" name="chef_id">
-                                            <button class="btn btn-sm btn-success" type="submit">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                        </form>
-                                        <form action="deleteChef.php" method="post" class="m-0 p-0" style="display:inline;">
-                                            <input type="hidden" value="<?php echo $chef['id']; ?>" name="chef_id">
-                                            <button class="btn btn-sm btn-danger" type="submit">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                    <td ><?php echo $customer['name'];?></td>
+                                    <td ><?php echo $customer['count'];?></td>
+                                    <?php 
+                                        // Address string
+                                        $address = $customer['address']; 
+                                        // Split the address by the first comma
+                                        $address_parts = explode(',', $address, 3);
 
+                                        // Handle if the address contains at least two commas
+                                        if (count($address_parts) >= 3) {
+                                            $city = trim($address_parts[0]);      // First part (city)
+                                            $province = trim($address_parts[1]);  // Second part (province)
+                                            $remaining_address = trim($address_parts[2]); // Rest of the address (after the second comma)
+                                        } else {
+                                            // If the address format doesn't match the expected structure, fallback to original address
+                                            $city = $province = $remaining_address = $address; // Fallback to the full address
+                                        }
+                                    ?>
+                                    <td class="col-3"><?php echo $remaining_address;?></td>
+                                    <td><?php echo $city;?></td>
+                                    <td ><?php echo $province;?></td>
+                                    <td class="col-2"><?php echo $customer['phone'];?></td>
+                                    <td ><?php echo $customer['email'];?></td>
+
+                                    
                                 </tr>
                                 <?php endforeach;?>
                             </tbody>

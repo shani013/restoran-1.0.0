@@ -1,6 +1,12 @@
 <?php
     include 'db-connection.php';
     session_start();
+    // Check if the user is logged in
+    if (!isset($_SESSION['id'])) {
+        // Redirect to login.php if the user is not logged in
+        header('Location: login.php');
+        exit();
+    }
     if ($_SERVER["REQUEST_METHOD"] == "POST" &&  isset($_POST['add-to-cart'])) {
             // Get POST values
         $product_id = $_POST['product-id'];

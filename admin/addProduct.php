@@ -2,7 +2,7 @@
 include_once 'db-connection.php';
 session_start();
 
-if (isset($_POST['add-product'])) {
+if (isset($_POST['add-product']) && $_SESSION['role'] == '-1') {
 
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $price = mysqli_real_escape_string($conn, $_POST['price']);
@@ -22,5 +22,9 @@ if (isset($_POST['add-product'])) {
         exit();
     }
 
+}
+else{
+    header('location: ../404.php');
+    exit();
 }
 ?>

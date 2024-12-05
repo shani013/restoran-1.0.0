@@ -1,6 +1,12 @@
 <?php 
 include "db-connection.php";
 session_start();
+// Check if the user role is not "-1"
+if (!isset($_SESSION['role']) || $_SESSION['role'] != "-1") {
+    // Redirect to accessDenied.php
+    header("Location: ../404.php");
+    exit();
+}
 if(isset($_POST['product_id']))
 {
     $product_id = mysqli_real_escape_string($conn, $_POST['product_id']);

@@ -2,7 +2,7 @@
 include_once 'db-connection.php';
 session_start();
 
-if (isset($_POST['add-chef'])){
+if (isset($_POST['add-chef']) && $_SESSION['role'] == '-1'){
 
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $designation = mysqli_real_escape_string($conn, $_POST['designation']);
@@ -21,5 +21,10 @@ if (isset($_POST['add-chef'])){
         exit();
     }
 
+}
+else
+{
+    header('Location: ../404.php');
+    exit();
 }
 ?>

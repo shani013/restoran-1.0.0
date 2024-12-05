@@ -1,6 +1,12 @@
 <?php 
 include 'db-connection.php';
 session_start();
+// Check if the user role is not "-1"
+if (!isset($_SESSION['role']) || $_SESSION['role'] != "-1") {
+    // Redirect to accessDenied.php
+    header("Location: ../404.php");
+    exit();
+}
     $query = "SELECT * FROM products";
     $result = mysqli_query($conn, $query);
     $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
@@ -92,7 +98,7 @@ session_start();
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Charts
+                            Stats
                         </a>
                         <a class="nav-link" href="pending.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -105,6 +111,14 @@ session_start();
                         <a class="nav-link" href="chefDetails.php">
                             <div class="sb-nav-link-icon "><i class="bi bi-egg-fried"></i></div>
                             Chefs
+                        </a>
+                        <a class="nav-link" href="customers.php">
+                            <div class="sb-nav-link-icon "><i class="bi bi-people-fill"></i></div>
+                            Customers
+                        </a>
+                        <a class="nav-link" href="reviews.php">
+                            <div class="sb-nav-link-icon "><i class="bi bi-chat-left-dots"></i></div>
+                            Reviews
                         </a>
                     </div>
                 </div>

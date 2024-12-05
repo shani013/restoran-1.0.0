@@ -3,11 +3,10 @@ include 'db-connection.php';
 if (isset($_POST['submit'])) {
     session_start();
     
-   // Check if the user has already reviewed the restauran 
         $user_id=$_SESSION['id'];
         $message = mysqli_real_escape_string($conn, $_POST['message']);
         $profession = mysqli_real_escape_string($conn, $_POST['profession']);
-        $target_dir = "uploads/reviews/";
+        $target_dir = "../uploads/reviews/";
         // Generate a unique file name to prevent overwriting
         $target_file = $target_dir . uniqid() . basename($_FILES["image"]["name"]);
 
@@ -20,7 +19,7 @@ if (isset($_POST['submit'])) {
             exit();
         }  
 }
-else if(isset($_SESSION['id'])) {
+else {
    $query = "SELECT 
     users.name AS name,
     reviews.image AS image,
@@ -34,12 +33,13 @@ JOIN
     $reviews = mysqli_fetch_all($data, MYSQLI_ASSOC);
 }
 ?>
+
 <?php foreach ($reviews as $row) { ?>
-    <div class="testimonial-item bg-transparent border  p-4" style="border-radius:40px;">
+    <div class="testimonial-item bg-transparent border p-4" style="border-radius:40px;">
         <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
         <p><?php echo $row['message']; ?></p>
         <div class="d-flex align-items-center">
-            <img class="img-fluid flex-shrink-0 rounded-circle" src="<?php echo $row['image']; ?>"
+            <img class="img-fluid flex-shrink-0 rounded-circle" src="<?php echo str_replace('../', '', $row['image']); ?>"
                 style="width: 70px; height: 70px;">
             <div class="ps-3">
                 <h5 class="mb-1"><?php echo $row['name']; ?></h5>
@@ -47,5 +47,6 @@ JOIN
             </div>
         </div>
     </div>
+
 
 <?php } ?>
