@@ -43,7 +43,7 @@
         foreach ($_SESSION['cart-items'] as $item) {
             $_SESSION['total_qty'] += $item['qty'];
         }
-        header('location:index.php');
+        header('location:menu.php');
         exit();
     }
 
@@ -76,6 +76,7 @@
         header('Location: cart.php');
         exit();  // Don't forget to call exit() after header redirection
     }
+    $orderItems=array();
     $total = 0;
     if (isset($_SESSION['cart-items']) && count($_SESSION['cart-items']) > 0) {
         foreach ($_SESSION['cart-items'] as $items) {
@@ -86,8 +87,13 @@
 
             // Add product price * quantity to the total
             $total += $product['price'] * $items['qty'];
+            // Add item to the orderItems array in the desired format
+            $orderItems[] = array(
+            'id' => $id,
+            'qty' => $items['qty']);
         }
     }
+    //$orderItems = json_encode($orderItems);
 
     // Step 3: Calculate delivery charges (can be static or dynamic)
     $delivery_charge = 5.00; // Fixed delivery charge. You can adjust it or make it dynamic.
@@ -120,61 +126,70 @@
     </style>
 </head>
 <body>
-    <div class="container  px-5" style="max-width:600px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; height: 100vh; display: flex; flex-direction: column;">
+    <div class="container-fluid position-relative vh-100">
+        <!-- Background Image -->
+        <div class="position-absolute top-0 start-0 w-100 h-100">
+            <img src="bg-hero.jpg" alt="Background" class="w-100 h-100 object-fit-cover" style="opacity: 0.4;">
+        </div>
 
-        <!-- Cart Title (Sticky) -->
-        <h3 class="text-center" style="position: sticky; top: 20px; padding: 10px;">Your Cart</h3>
+        <!-- Cart Form -->
+        <div class="container d-flex flex-column justify-content-between position-relative mx-auto h-100" 
+            style="max-width: 600px; background-color: rgba(0, 0, 0, 0.8); border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); padding: 20px; color: white;">
 
-        <!-- Scrollable Cart Items -->
-        <div class="cart-items" style="flex: 1; overflow-y: auto; padding-right: 10px;">
-            <?php if (isset($_SESSION['cart-items']) && count($_SESSION['cart-items']) > 0): ?>
-                <!-- Display cart items if the cart is not empty -->
-                <?php foreach ($_SESSION['cart-items'] as $items):
-                    $id = $items['id'];
-                    $query = "SELECT * FROM products WHERE id=$id";
-                    $result = mysqli_query($conn, $query);
-                    $product = mysqli_fetch_assoc($result);
-                ?>
-                    <div class="cart-item d-flex justify-content-between align-items-center border-bottom py-3 px-3" style="border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
-                        <img src="<?php echo $product['image']; ?>" alt="Product Image" style="width: 50px; height: 50px;" class="rounded-circle">
-                        <div class="w-100 ps-3">
-                            <h4><?php echo $product['name']; ?></h4>
-                            <p class='d-inline'>Qty: <?php echo $items['qty']; ?></p>      
-                            <h6 class='d-inline'>$<?php echo number_format($product['price'], 2); ?></h6>
+            <!-- Sticky Title -->
+            <h3 class="text-center sticky-top py-2 text-warning rounded" style="z-index: 1;">Your Cart</h3>
+
+            <!-- Scrollable Items -->
+            <div class="cart-items overflow-auto flex-grow-1 my-3" style="max-height: calc(100vh - 200px);">
+                <!-- PHP code for items -->
+                <?php if (isset($_SESSION['cart-items']) && count($_SESSION['cart-items']) > 0): ?>
+                    <?php foreach ($_SESSION['cart-items'] as $items):
+                        $id = $items['id'];
+                        $query = "SELECT * FROM products WHERE id=$id";
+                        $result = mysqli_query($conn, $query);
+                        $product = mysqli_fetch_assoc($result);
+                    ?>
+                        <div class="cart-item d-flex justify-content-between align-items-center border-bottom py-3 px-3 mb-3"
+                            style="background-color: rgba(255, 255, 255, 0.8); border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">
+                            <img src="<?php echo str_replace('../', '', $product['image']); ?>" alt="Product Image" style="width: 70px; height: 70px;" class="rounded-circle">
+                            <div class="w-100 ps-3 ">
+                                <h4><?php echo $product['name']; ?></h4>
+                                <p class="d-inline text-dark">Qty: <?php echo $items['qty']; ?></p>      
+                                <h6 class="d-inline">$<?php echo number_format($product['price'], 2); ?></h6>
+                            </div>
+                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                                <input type="hidden" name="r_id" value="<?php echo $product['id']; ?>">
+                                <button type="submit" name="remove-id" class="btn btn-sm btn-danger">Remove</button>
+                            </form>
                         </div>
-                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method='post'>
-                            <input type="hidden" name='r_id' value='<?php echo $product['id']; ?>'>
-                            <button type="submit" name='remove-id' class="btn btn-sm btn-danger">Remove</button>
-                        </form>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <!-- Show a message when the cart is empty -->
-                <h4 class="text-center text-success">Your cart is empty!</h4>
-            <?php endif; ?>
-        </div>
-
-        <!-- Cart Summary (Sticky) -->
-        <div class="cart-summary d-inline justify-content-between mt-3" style="position: sticky; bottom: 0; ">
-            <h5 >Total : <span class='text-success'><?php echo number_format($total,2);?> $</span></h5>
-            <h5 >Delivery : <span class='text-danger'><?php echo number_format($delivery_charge,2);?> $</span></h5>
-            <h5 >Grand Total : <?php echo number_format($grand_total,2);?> $</h5>
-        </div>
-
-        <!-- Action Buttons -->
-         <!-- Button to trigger the modal -->
-        <?php if(isset($_SESSION['cart-items']) && count($_SESSION['cart-items']) > 0):?>
-            <div class=" text-center">
-                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addressModal">Proceed to Order</button>
-                <a href="index.php" class="btn btn-sm btn-danger">Cancel</a>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <h4 class="text-center text-warning">Your cart is empty!</h4>
+                <?php endif; ?>
             </div>
-        <?php else: ?>
-            <div class=" text-center">
-                <a href="menu.php" class="btn btn-sm btn-danger">Order Items</a>
-            </div>
-        <?php endif;?>
 
+            <!-- Sticky Summary -->
+            <div class="cart-summary text-white sticky-bottom  py-3 rounded" style="z-index: 1;">
+                <h5 class="text-success">Total: <span class="text-success"><?php echo number_format($total, 2); ?> $</span></h5>
+                <h5 class="text-danger">Delivery: <span class="text-danger"><?php echo number_format($delivery_charge, 2); ?> $</span></h5>
+                <h5 class="text-warning">Grand Total: <span class="text-warning"><?php echo number_format($grand_total, 2); ?> $</span></h5>
+            </div>
+
+            <!-- Buttons -->
+            <div class="text-center mt-3">
+                <?php if (isset($_SESSION['cart-items']) && count($_SESSION['cart-items']) > 0): ?>
+                    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addressModal">Proceed to Order</button>
+                    <a href="index.php" class="btn btn-sm btn-danger">Cancel</a>
+                <?php else: ?>
+                    <a href="index.php" class="btn btn-sm btn-danger">Cancel</a>
+                    <a href="menu.php" class="btn btn-sm btn-success">Order Items</a>
+                    
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
+
+
         
         
 
@@ -183,12 +198,12 @@
             <div class="modal-dialog">
                 <div class="modal-content p-4">
                     <h5 class="modal-title text-center mb-4">Enter Your Address</h5>
-                    <form>
+                    <form action="order.php" method="post">
                         <!-- Province and City on One Line -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="selectProvince" class="form-label">Select Province</label>
-                                <select class="form-select" id="selectProvince">
+                                <select class="form-select" name="province" id="selectProvince">
                                     <option selected disabled>Choose a province</option>
                                     <option value="Punjab">Punjab</option>
                                     <option value="Sindh">Sindh</option>
@@ -199,7 +214,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="selectCity" class="form-label">Select City</label>
-                                <select class="form-select" id="selectCity">
+                                <select class="form-select" name="city" id="selectCity">
                                     <option selected disabled>Choose a city</option>
                                     <option value="Lahore">Lahore</option>
                                     <option value="Pakpattan">Pakpattan</option>
@@ -213,13 +228,17 @@
                         <!-- Address Input -->
                         <div class="mb-3">
                             <label for="userAddress" class="form-label">Enter Address</label>
-                            <textarea class="form-control" id="userAddress" rows="3" placeholder="Enter your full address"></textarea>
+                            <textarea class="form-control" id="userAddress" rows="3" name="address" placeholder="Enter your full address"></textarea>
                         </div>
 
                         <!-- Buttons -->
                         <div class="btn-center">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-success">Confirm Order</button>
+                            <!--Total bill of order-->
+                            <input type="hidden" name="bill" value="<?php echo $grand_total; ?>">
+                            <!--Details of order in json form-->
+                            <input type="hidden" name="details" value='<?php echo json_encode($orderItems); ?>'>
+                            <button type="submit" name="confirm-order" class="btn btn-success">Confirm Order</button>
                         </div>
                     </form>
                 </div>
