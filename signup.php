@@ -25,7 +25,7 @@ if(isset($_POST['signin']))
         $query = "INSERT INTO users(name,phone,email, password,role) VALUES ('$name','$phone', '$email', '$password','$role')";
         if(mysqli_query($conn,$query))
         {
-            $_SESSION['name'] = $name;
+            
             header('location:login.php');
             exit();
         }
