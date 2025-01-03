@@ -1,12 +1,11 @@
 <?php
 include "db-connection.php";
 session_start();
-if(!isset($_SESSION['role'] ) || $_SESSION['role'] !='-1')
-{
+if (!isset($_SESSION['role']) || $_SESSION['role'] != '-1') {
     header("Location: ../404.php");
     exit;
 }
-$query="SELECT 
+$query = "SELECT 
     reviews.id AS id,
     reviews.user_id AS user_id,
     reviews.image AS image,
@@ -18,11 +17,12 @@ JOIN
     users ON users.id = reviews.user_id";
 
 $result = mysqli_query($conn, $query);
-$data=mysqli_fetch_all($result,MYSQLI_ASSOC);
+$data = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -30,25 +30,30 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Customers</title>
-        <style>
-            .table thead {
-                background-color: #fea116;
-                color: #fff;
-            }
-            .table th, .table td {
-                text-align: center;
-                vertical-align: middle;
-            }
-            .table-striped tbody tr:nth-child(odd) {
-                background-color: #f9f9f9;
-            }
-            .table-hover tbody tr:hover {
-                background-color: #fea116;
-            }
-            .table-responsive {
-                margin-top: 20px;
-            }
-        </style>
+    <style>
+        .table thead {
+            background-color: #fea116;
+            color: #fff;
+        }
+
+        .table th,
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table-striped tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #fea116;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
 
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -56,6 +61,7 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
 </head>
+
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
@@ -78,7 +84,9 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="#!"><i class="bi bi-person"></i> Profile</a></li>
                         <li><a class="dropdown-item" href="#!"><i class="bi bi-gear"></i> Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item text-danger" href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                     </ul>
                 </li>
@@ -94,8 +102,8 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                         <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
-                        </a> 
-                        
+                        </a>
+
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -120,7 +128,7 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    <?php echo $_SESSION['name'] ;?>
+                    <?php echo $_SESSION['name']; ?>
                 </div>
             </nav>
         </div>
@@ -133,7 +141,7 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                             <li class="breadcrumb-item active">Reviews details</li>
                         </ol>
-                        
+
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
@@ -147,28 +155,28 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $count = 1;?>
-                                <?php foreach($data as $review): ?>
-                                <tr>
-                                    <td><?php echo $count++?></td>
-                                    <td>
-                                        <img src="<?php echo $review['image'];?>" alt="<?php echo $review['name'];?>" style="width: 60px; height: 60px;">
-                                    </td>
-                                    <td ><?php echo $review['name'];?></td>
-                                    <td class="col-9 text-start"><?php echo $review['message'];?></td>
-                                    <td>
-                                        <form action="deleteReview.php" method="post" class="m-0 p-0" style="display:inline;">
-                                            <input type="hidden" value="<?php echo $review['id']; ?>" name="review_id">
-                                            <button class="btn btn-sm btn-danger" type="submit">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php endforeach;?>
+                                <?php $count = 1; ?>
+                                <?php foreach ($data as $review): ?>
+                                    <tr>
+                                        <td><?php echo $count++ ?></td>
+                                        <td>
+                                            <img src="<?php echo '../' . $review['image']; ?>" alt="<?php echo $review['name']; ?>" style="width: 60px; height: 60px;">
+                                        </td>
+                                        <td><?php echo $review['name']; ?></td>
+                                        <td class="col-9 text-start"><?php echo $review['message']; ?></td>
+                                        <td>
+                                            <form action="deleteReview.php" method="post" class="m-0 p-0" style="display:inline;">
+                                                <input type="hidden" value="<?php echo $review['id']; ?>" name="review_id">
+                                                <button class="btn btn-sm btn-danger" type="submit">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
                             </tbody>
-                        </table>   
-                        
+                        </table>
+
                     </div>
 
             </main>
@@ -191,4 +199,5 @@ $data=mysqli_fetch_all($result,MYSQLI_ASSOC);
     <script src="js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 </body>
+
 </html>

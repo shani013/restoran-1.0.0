@@ -6,7 +6,7 @@ if (isset($_POST['submit'])) {
         $user_id=$_SESSION['id'];
         $message = mysqli_real_escape_string($conn, $_POST['message']);
         $profession = mysqli_real_escape_string($conn, $_POST['profession']);
-        $target_dir = "../uploads/reviews/";
+        $target_dir = "uploads/reviews/";
         // Generate a unique file name to prevent overwriting
         $target_file = $target_dir . uniqid() . basename($_FILES["image"]["name"]);
 
